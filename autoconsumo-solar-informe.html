@@ -1,0 +1,2582 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Autoconsumo solar doméstico en España — Informe de nicho</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☀️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,440;9..144,560;9..144,650&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+
+    --bg:#F2F4F0;
+    --bg-elevated:#FFFFFF;
+    --text:#1A241D;
+    --text-muted:#57685C;
+    --border:#DCE0D7;
+    --gold:#A9761F;
+    --gold-soft:#B9832A;
+    --teal:#1F5C52;
+    --teal-soft:#28756A;
+    --hero-bg:#11201A;
+    --hero-text:#F1F3EE;
+    --hero-text-muted:#9FB0A4;
+    --shadow:none;
+  }
+  :root:not([data-theme="light"]){
+    @media (prefers-color-scheme: dark){
+      --bg:#10140F;
+      --bg-elevated:#171C15;
+      --text:#E9ECE4;
+      --text-muted:#9DAA9C;
+      --border:#2A322A;
+      --gold:#D9A24A;
+      --gold-soft:#E2B36A;
+      --teal:#4FA98F;
+      --teal-soft:#69BCA4;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#10140F;
+    --bg-elevated:#171C15;
+    --text:#E9ECE4;
+    --text-muted:#9DAA9C;
+    --border:#2A322A;
+    --gold:#D9A24A;
+    --gold-soft:#E2B36A;
+    --teal:#4FA98F;
+    --teal-soft:#69BCA4;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth; scroll-padding-top:calc(1.25rem + env(safe-area-inset-top,0px));}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'IBM Plex Sans', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size:16.5px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{
+    font-family:'Fraunces', Georgia, 'Times New Roman', serif;
+    font-weight:650;
+    color:var(--text);
+    line-height:1.15;
+    letter-spacing:-0.01em;
+  }
+  a{color:var(--teal);}
+  :focus-visible{outline:2px solid var(--gold); outline-offset:2px;}
+  img{max-width:100%;}
+
+  /* ---------- Top bar ---------- */
+  .topbar{
+    position:sticky; top:0; z-index:40;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0.7rem 1.25rem;
+    padding-top:calc(0.7rem + env(safe-area-inset-top,0px));
+    background:var(--hero-bg);
+    color:var(--hero-text);
+    border-bottom:1px solid rgba(255,255,255,0.08);
+  }
+  .topbar .brand{
+    font-family:'Fraunces', Georgia, serif;
+    font-weight:650;
+    font-size:1.02rem;
+    color:var(--hero-text);
+    text-decoration:none;
+    display:flex; align-items:center; gap:0.5rem;
+  }
+  .topbar .brand .mark{color:var(--gold-soft);}
+  .topbar-actions{display:flex; align-items:center; gap:0.4rem;}
+  .icon-btn{
+    background:transparent; border:1px solid rgba(255,255,255,0.18);
+    color:var(--hero-text); width:2.15rem; height:2.15rem; border-radius:7px;
+    display:inline-flex; align-items:center; justify-content:center;
+    cursor:pointer; font-size:1rem; line-height:1;
+    transition:background .15s ease, border-color .15s ease;
+  }
+  .icon-btn:hover{background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.3);}
+  .toc-toggle{display:none;}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    background:
+      radial-gradient(900px 420px at 88% -10%, rgba(185,131,42,0.20), transparent 60%),
+      var(--hero-bg);
+    color:var(--hero-text);
+    padding:3.4rem 1.5rem 2.6rem;
+  }
+  .hero-inner{max-width:760px; margin:0 auto;}
+  .hero h1{
+    font-size:clamp(2.05rem, 4.6vw, 3.35rem);
+    margin:0 0 0.85rem;
+    color:var(--hero-text);
+  }
+  .hero .dek{
+    font-size:clamp(1.02rem, 2vw, 1.22rem);
+    font-weight:400;
+    color:var(--hero-text-muted);
+    max-width:46ch;
+    margin:0 0 1.35rem;
+  }
+  .hero .meta{
+    font-size:0.88rem;
+    color:var(--hero-text-muted);
+    margin:0 0 2.1rem;
+    padding-bottom:2.1rem;
+    border-bottom:1px solid rgba(255,255,255,0.12);
+  }
+  .hero .meta strong{color:var(--hero-text); font-weight:600;}
+
+  .stat-strip{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:0;
+  }
+  .stat-strip .stat{
+    padding:0 1.15rem;
+    border-left:1px solid rgba(255,255,255,0.14);
+  }
+  .stat-strip .stat:first-child{
+    padding-left:0; border-left:none;
+  }
+  .stat .num{
+    font-family:'Fraunces', Georgia, serif;
+    font-weight:600;
+    font-size:clamp(1.15rem,2.3vw,1.5rem);
+    color:var(--gold-soft);
+    display:block;
+    font-variant-numeric:tabular-nums;
+    line-height:1.15;
+  }
+  .stat .label{
+    display:block;
+    margin-top:0.35rem;
+    font-size:0.78rem;
+    color:var(--hero-text-muted);
+    line-height:1.4;
+  }
+
+  /* ---------- Layout ---------- */
+  .layout{
+    max-width:1180px;
+    margin:0 auto;
+    display:grid;
+    grid-template-columns:250px minmax(0,1fr);
+    gap:2.75rem;
+    padding:2.75rem 1.5rem 5rem;
+  }
+  aside.sidebar{
+    position:sticky;
+    top:calc(3.6rem + env(safe-area-inset-top,0px));
+    align-self:start;
+    max-height:calc(100vh - 4.5rem);
+    overflow-y:auto;
+  }
+  .sidebar-label{
+    font-size:0.78rem;
+    color:var(--text-muted);
+    margin:0 0 0.75rem;
+  }
+  .sidebar nav ul{list-style:none; margin:0; padding:0;}
+  .sidebar nav li{margin:0;}
+  .sidebar nav a{
+    display:block;
+    padding:0.4rem 0 0.4rem 0.75rem;
+    border-left:2px solid var(--border);
+    color:var(--text-muted);
+    text-decoration:none;
+    font-size:0.87rem;
+    line-height:1.4;
+    transition:color .15s ease, border-color .15s ease;
+  }
+  .sidebar nav a:hover{color:var(--text);}
+  .sidebar nav a.active{
+    color:var(--teal);
+    border-left-color:var(--teal);
+    font-weight:600;
+  }
+
+  /* ---------- Article ---------- */
+  article{min-width:0; max-width:740px;}
+  article > h2:first-child{margin-top:0;}
+  h2{
+    font-size:clamp(1.45rem,2.6vw,1.85rem);
+    margin:3.1rem 0 1.1rem;
+    padding-top:0.2rem;
+    border-top:1px solid var(--border);
+    padding-top:2.2rem;
+  }
+  article > h2:first-of-type{border-top:none; padding-top:0;}
+  h3{
+    font-size:1.22rem;
+    margin:2.1rem 0 0.85rem;
+  }
+  h4{
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:1.0rem;
+    font-weight:700;
+    color:var(--teal);
+    margin:1.6rem 0 0.6rem;
+  }
+  p{margin:0 0 1.05rem; max-width:72ch;}
+  ul,ol{margin:0 0 1.05rem; padding-left:1.3rem;}
+  li{margin:0 0 0.4rem; max-width:70ch;}
+  li > ul, li > ol{margin-top:0.4rem;}
+  strong{font-weight:600;}
+
+  blockquote{
+    margin:1.6rem 0;
+    padding:0.95rem 1.2rem;
+    background:var(--bg-elevated);
+    border-left:3px solid var(--gold-soft);
+    border-radius:2px;
+    color:var(--text-muted);
+    font-size:0.95rem;
+  }
+  blockquote p{margin:0;}
+  blockquote strong{color:var(--text);}
+
+  pre{
+    background:var(--bg-elevated);
+    border:1px solid var(--border);
+    border-radius:6px;
+    padding:1.05rem 1.2rem;
+    overflow-x:auto;
+    font-family:'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace;
+    font-size:0.79rem;
+    line-height:1.6;
+    color:var(--text-muted);
+    margin:1.4rem 0;
+  }
+  code{font-family:'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace;}
+
+  .table-scroll{
+    overflow-x:auto;
+    margin:1.5rem 0;
+    border:1px solid var(--border);
+    border-radius:8px;
+    background:var(--bg-elevated);
+  }
+  table{
+    border-collapse:collapse;
+    width:100%;
+    min-width:480px;
+    font-size:0.89rem;
+  }
+  th,td{
+    text-align:left;
+    padding:0.6rem 0.85rem;
+    border-bottom:1px solid var(--border);
+    vertical-align:top;
+  }
+  thead th{
+    font-family:'IBM Plex Sans', sans-serif;
+    font-weight:600;
+    color:var(--text);
+    background:var(--border);
+    background:color-mix(in srgb, var(--teal) 8%, var(--bg-elevated));
+    white-space:nowrap;
+    border-bottom:1px solid var(--border);
+  }
+  tbody tr:last-child td{border-bottom:none;}
+  td{color:var(--text-muted);}
+  td:first-child{color:var(--text); font-weight:500;}
+  td, th{font-variant-numeric:tabular-nums;}
+
+  hr{border:none; border-top:1px solid var(--border); margin:2.4rem 0;}
+
+  /* ---------- Footer ---------- */
+  footer{
+    border-top:1px solid var(--border);
+    padding:2.6rem 1.5rem 3.5rem;
+    padding-bottom:calc(3.5rem + env(safe-area-inset-bottom,0px));
+  }
+  .footer-inner{
+    max-width:1180px; margin:0 auto;
+    display:flex; flex-wrap:wrap; gap:1.5rem 3rem;
+    justify-content:space-between;
+    font-size:0.86rem;
+    color:var(--text-muted);
+  }
+  .footer-inner strong{color:var(--text); font-family:'Fraunces',serif; font-weight:650; font-size:1rem;}
+  .footer-col{max-width:420px;}
+
+  /* ---------- Mobile ---------- */
+  .toc-drawer-backdrop{
+    display:none;
+    position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:49;
+  }
+  @media (max-width: 900px){
+    .layout{grid-template-columns:1fr; padding-top:1.75rem;}
+    .stat-strip{grid-template-columns:repeat(2,1fr); row-gap:1.3rem;}
+    .stat-strip .stat:nth-child(3){padding-left:0; border-left:none;}
+    .toc-toggle{display:inline-flex;}
+    aside.sidebar{
+      display:none;
+      position:fixed;
+      z-index:50;
+      top:0; right:0; bottom:0;
+      width:min(82vw, 320px);
+      max-height:none;
+      background:var(--bg);
+      padding:calc(1.25rem + env(safe-area-inset-top,0px)) 1.25rem 1.25rem;
+      box-shadow:-8px 0 24px rgba(0,0,0,0.18);
+      overflow-y:auto;
+    }
+    body.toc-open aside.sidebar{display:block;}
+    body.toc-open .toc-drawer-backdrop{display:block;}
+    .sidebar-close{
+      display:flex; align-items:center; justify-content:space-between;
+      margin-bottom:1rem;
+    }
+  }
+  .sidebar-close{display:none;}
+  @media (max-width:900px){ .sidebar-close{display:flex;} }
+
+  @media print{
+    .topbar, .toc-drawer-backdrop, aside.sidebar{display:none !important;}
+    .layout{grid-template-columns:1fr; padding:0;}
+    .hero{padding-top:1rem;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{transition:none !important;}
+  }
+</style>
+</head>
+
+<body>
+
+<div class="toc-drawer-backdrop" id="tocBackdrop"></div>
+
+<header class="topbar">
+  <a class="brand" href="#top"><span class="mark">☀</span> Informe de nicho</a>
+  <div class="topbar-actions">
+    <button class="icon-btn toc-toggle" id="tocToggle" aria-label="Abrir índice" aria-expanded="false">☰</button>
+    <button class="icon-btn" id="themeToggle" aria-label="Cambiar a modo oscuro" aria-pressed="false">◐</button>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <div class="hero-inner">
+    <h1>Autoconsumo solar doméstico en España</h1>
+    <p class="dek">Plan de consultoría para lanzar y monetizar una web de nicho con Google AdSense, leads de instaladoras y afiliación.</p>
+    <p class="meta">Informe de consultoría en SEO y monetización web, con datos de mercado revisados en <strong>septiembre de 2026</strong>.</p>
+    <div class="stat-strip">
+      <div class="stat">
+        <span class="num">30k–120k</span>
+        <span class="label">sesiones/mes objetivo a los 18–24 meses</span>
+      </div>
+      <div class="stat">
+        <span class="num">4–9 €</span>
+        <span class="label">RPM medio estimado de AdSense en España</span>
+      </div>
+      <div class="stat">
+        <span class="num">5k–15k €</span>
+        <span class="label">ticket medio de instalación: el motor real de los leads</span>
+      </div>
+      <div class="stat">
+        <span class="num">83</span>
+        <span class="label">artículos en el plan de contenido inicial</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-close">
+      <p class="sidebar-label" style="margin:0;">Índice del informe</p>
+      <button class="icon-btn" id="sidebarClose" aria-label="Cerrar índice">✕</button>
+    </div>
+    <p class="sidebar-label" id="sidebarLabelDesktop">Índice del informe</p>
+    <nav aria-label="Secciones del informe">
+      <ul>
+          <li><a href="#resumen-ejecutivo" class="nav-link" data-target="resumen-ejecutivo">Resumen ejecutivo</a></li>
+          <li><a href="#1-seleccion-del-nicho" class="nav-link" data-target="1-seleccion-del-nicho">1. Selección del nicho</a></li>
+          <li><a href="#2-justificacion-del-nicho" class="nav-link" data-target="2-justificacion-del-nicho">2. Justificación del nicho</a></li>
+          <li><a href="#3-subnichos-y-categorias" class="nav-link" data-target="3-subnichos-y-categorias">3. Subnichos y categorías</a></li>
+          <li><a href="#4-plan-de-contenido-completo" class="nav-link" data-target="4-plan-de-contenido-completo">4. Plan de contenido completo</a></li>
+          <li><a href="#5-estrategia-seo" class="nav-link" data-target="5-estrategia-seo">5. Estrategia SEO</a></li>
+          <li><a href="#6-monetizacion" class="nav-link" data-target="6-monetizacion">6. Monetización</a></li>
+          <li><a href="#7-coste-de-contenido" class="nav-link" data-target="7-coste-de-contenido">7. Coste de contenido</a></li>
+          <li><a href="#8-proyeccion-de-ingresos" class="nav-link" data-target="8-proyeccion-de-ingresos">8. Proyección de ingresos</a></li>
+          <li><a href="#9-ejemplo-practico-como-seria-la-web" class="nav-link" data-target="9-ejemplo-practico-como-seria-la-web">9. Ejemplo práctico: cómo sería la web</a></li>
+          <li><a href="#10-conclusion" class="nav-link" data-target="10-conclusion">10. Conclusión</a></li>
+          <li><a href="#anexo-fuentes-y-verificaciones-pendientes" class="nav-link" data-target="anexo-fuentes-y-verificaciones-pendientes">Anexo: fuentes y verificaciones pendientes</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <article>
+<blockquote>
+<p><strong>Nota metodológica.</strong> Los datos de mercado (potencia instalada, crecimiento de baterías, estado de las ayudas) proceden de fuentes sectoriales consultadas en septiembre de 2026 y se citan al final. Los volúmenes de búsqueda, CPC, RPM y precios de redacción son <strong>estimaciones de rango</strong> basadas en referencias habituales del mercado hispanohablante. Antes de invertir, valídalos con Google Keyword Planner, Semrush o Ahrefs, y con tus propios datos de Search Console y AdSense. Ningún número de este informe debe leerse como promesa de ingresos.</p>
+</blockquote>
+<h2 id="resumen-ejecutivo">Resumen ejecutivo</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Concepto</th>
+<th>Valoración</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Nicho elegido</strong></td>
+<td>Autoconsumo solar doméstico en España: placas solares, baterías, ayudas y trámites para viviendas</td>
+</tr>
+<tr>
+<td><strong>Competencia</strong></td>
+<td>Media-alta en palabras clave principales; media-baja en long tail</td>
+</tr>
+<tr>
+<td><strong>Tráfico realista objetivo</strong></td>
+<td>30.000–120.000 sesiones/mes a los 18–24 meses</td>
+</tr>
+<tr>
+<td><strong>RPM AdSense estimado (España)</strong></td>
+<td>4–9 € por 1.000 páginas vistas</td>
+</tr>
+<tr>
+<td><strong>Ventaja real del nicho</strong></td>
+<td>Ticket de compra alto (5.000–15.000 €), lo que abre la puerta a <strong>leads</strong> de instaladoras, muy por encima de lo que paga AdSense</td>
+</tr>
+<tr>
+<td><strong>Modelo recomendado</strong></td>
+<td>Híbrido: AdSense como base, leads y afiliación como motor de rentabilidad</td>
+</tr>
+<tr>
+<td><strong>Inversión de lanzamiento</strong></td>
+<td>1.000–1.500 € (lean con IA + edición humana) a 5.000–7.500 € (estándar con redactores y revisión técnica)</td>
+</tr>
+<tr>
+<td><strong>Veredicto</strong></td>
+<td>Vale la pena <strong>si</strong> se ejecuta con enfoque de autoridad y calculadoras; <strong>no</strong> como web de AdSense puro con contenido genérico</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="1-seleccion-del-nicho">1. Selección del nicho</h2>
+<h3 id="11-nicho-elegido">1.1 Nicho elegido</h3>
+<p><strong>Autoconsumo solar doméstico en España</strong> (placas fotovoltaicas, baterías, ayudas fiscales, legalización y compensación de excedentes en viviendas).</p>
+<p>No es "energías renovables" (demasiado amplio, dominado por medios y multinacionales), ni "placas solares" a secas (dominado por grandes instaladoras). El enfoque es una <strong>web independiente de decisión y trámites para propietarios de vivienda</strong>: ayudar a la persona a decidir si le compensa, cuánto costará, qué ayudas existen y cómo legalizar y optimizar su instalación.</p>
+<h3 id="12-por-que-este-nicho-y-por-que-ahora">1.2 Por qué este nicho y por qué ahora</h3>
+<p>Tres razones estructurales:</p>
+<ol>
+<li><strong>Ticket alto y decisión compleja.</strong> Una instalación residencial cuesta entre 4.000 y 12.000 € (más si lleva batería). El comprador investiga durante semanas y lee entre 5 y 15 páginas antes de pedir presupuesto. Eso genera muchas búsquedas long tail y anunciantes dispuestos a pagar por el contacto.</li>
+<li><strong>Normativa y ayudas cambiantes.</strong> El marco es un puzle: Real Decreto 244/2019 de autoconsumo, compensación simplificada, deducciones en el IRPF, bonificaciones municipales de IBI e ICIO y ayudas autonómicas que aparecen y desaparecen. La confusión del usuario es tu oportunidad de contenido.</li>
+<li><strong>El mercado ha cambiado de fase.</strong> Y eso define tu ángulo editorial.</li>
+</ol>
+<p><strong>Lo que dicen los datos recientes:</strong></p>
+<ul>
+<li>El autoconsumo fotovoltaico en España alcanzó <strong>9,3 GW acumulados a cierre de 2025</strong>, con 1,14 GW nuevos, un 3,7 % menos que en 2024 (UNEF).</li>
+<li>El segmento <strong>residencial se contrajo un 17 %</strong> en 2025: 36.330 hogares y 229 MW frente a 275 MW en 2024. El pico de 2022 estuvo empujado por las ayudas Next Generation y por el shock de precios tras la guerra de Ucrania.</li>
+<li>En sentido contrario, las <strong>baterías para autoconsumo crecieron un 65 %</strong> en 2025 (540 MWh), un 99 % en hogares, y el <strong>61 %</strong> de las nuevas instalaciones residenciales ya incorporaba almacenamiento.</li>
+<li>El programa de ayudas Next Generation (más de 1.300 M€) ya no está disponible de forma generalizada en 2026, y el sector espera un nuevo Real Decreto de Autoconsumo y Almacenamiento Distribuido.</li>
+</ul>
+<p><strong>Lectura estratégica:</strong> el usuario medio ya no pregunta "¿qué son las placas solares?", sino <em>"¿me compensa ahora que casi no hay subvenciones?"</em>, <em>"¿pongo batería o batería virtual?"</em>, <em>"¿cómo legalizo lo que ya tengo?"</em> y <em>"¿por qué produce menos de lo prometido?"</em>. Un mercado más maduro y escéptico premia a una web <strong>honesta, con números y sin humo comercial</strong>. Ese es el posicionamiento del proyecto.</p>
+<h3 id="13-nivel-de-competencia">1.3 Nivel de competencia</h3>
+<p><strong>Global: media-alta.</strong> Pero muy desigual según el tipo de consulta:</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Tipo de consulta</th>
+<th>Competidores dominantes</th>
+<th>Dificultad estimada</th>
+<th>Oportunidad</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Genéricas ("placas solares", "paneles solares")</td>
+<td>Instaladoras, energéticas, marketplaces, medios</td>
+<td>Muy alta</td>
+<td>Descartar al inicio</td>
+</tr>
+<tr>
+<td>Precio y coste</td>
+<td>Comparadores, instaladoras, portales de servicios</td>
+<td>Alta</td>
+<td>Atacar con tablas y datos propios</td>
+</tr>
+<tr>
+<td>Ayudas por comunidad autónoma</td>
+<td>Energéticas, comparadores, portales inmobiliarios</td>
+<td>Media</td>
+<td>Muy buena: contenido perecedero que otros no actualizan</td>
+</tr>
+<tr>
+<td>Baterías y batería virtual</td>
+<td>Comparadores y fabricantes</td>
+<td>Media</td>
+<td>Buena: interés creciente</td>
+</tr>
+<tr>
+<td>Trámites y legalización</td>
+<td>Blogs de instaladoras, guías dispersas</td>
+<td>Media-baja</td>
+<td>Muy buena: guías paso a paso</td>
+</tr>
+<tr>
+<td>Problemas y mantenimiento</td>
+<td>Foros, blogs pequeños</td>
+<td>Baja</td>
+<td>Excelente para autoridad temática</td>
+</tr>
+<tr>
+<td>Comunidades de vecinos y colectivo</td>
+<td>Poca competencia de calidad</td>
+<td>Baja</td>
+<td>Muy buena</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Conclusión:</strong> no se gana atacando los grandes términos, sino rodeándolos con cientos de consultas específicas en las que la respuesta actual en Google es mediocre o está desactualizada.</p>
+<h3 id="14-potencial-de-trafico-estimacion-mensual">1.4 Potencial de tráfico (estimación mensual)</h3>
+<p>Búsquedas mensuales estimadas en España para el clúster completo (sin variantes locales por provincia). Son rangos aproximados que deben validarse con una herramienta de keywords:</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Clúster</th>
+<th>Ejemplos de consulta</th>
+<th>Búsquedas/mes (est.)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Genérico</td>
+<td>placas solares, paneles solares para casa</td>
+<td>250.000–450.000</td>
+</tr>
+<tr>
+<td>Precio y coste</td>
+<td>precio instalación placas solares, cuánto cuesta 5 kW</td>
+<td>60.000–120.000</td>
+</tr>
+<tr>
+<td>Ayudas y fiscalidad</td>
+<td>subvenciones placas solares, deducción IRPF placas</td>
+<td>80.000–160.000 (con picos)</td>
+</tr>
+<tr>
+<td>Baterías</td>
+<td>batería solar, batería virtual, batería para placas</td>
+<td>40.000–80.000</td>
+</tr>
+<tr>
+<td>Trámites y normativa</td>
+<td>legalizar placas solares, compensación simplificada</td>
+<td>15.000–35.000</td>
+</tr>
+<tr>
+<td>Excedentes y factura</td>
+<td>compensación de excedentes, tarifa con placas</td>
+<td>20.000–45.000</td>
+</tr>
+<tr>
+<td>Equipos y marcas</td>
+<td>inversor híbrido, Huawei Luna, mejores paneles</td>
+<td>40.000–90.000</td>
+</tr>
+<tr>
+<td>Comunidades y colectivo</td>
+<td>autoconsumo colectivo, placas en comunidad</td>
+<td>8.000–20.000</td>
+</tr>
+<tr>
+<td><strong>Total del clúster</strong></td>
+<td></td>
+<td><strong>≈ 0,5–1 millón/mes</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Tráfico capturable realista.</strong> Un sitio nuevo no captura el clúster, sino una fracción concentrada en long tail:</p>
+<ul>
+<li>Mes 6: 1.000–4.000 sesiones/mes</li>
+<li>Mes 12: 6.000–30.000 sesiones/mes</li>
+<li>Mes 24: 30.000–120.000 sesiones/mes (escenario medio-alto, con buena ejecución)</li>
+</ul>
+<h3 id="15-tipo-de-usuario-e-intencion-de-busqueda">1.5 Tipo de usuario e intención de búsqueda</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Perfil</th>
+<th>Descripción</th>
+<th>Qué busca</th>
+<th>Valor comercial</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>El evaluador</strong></td>
+<td>Propietario de vivienda unifamiliar o adosado, 35–65 años, factura de luz alta</td>
+<td>Precio, rentabilidad, ayudas, comparar presupuestos</td>
+<td>Muy alto (lead)</td>
+</tr>
+<tr>
+<td><strong>El optimizador</strong></td>
+<td>Ya tiene placas</td>
+<td>Baterías, excedentes, tarifa, problemas de rendimiento</td>
+<td>Alto (afiliación, baterías)</td>
+</tr>
+<tr>
+<td><strong>El fiscal</strong></td>
+<td>Busca deducciones en campaña de Renta (abril–junio)</td>
+<td>IRPF, IBI, ICIO, certificado energético</td>
+<td>Medio-alto</td>
+</tr>
+<tr>
+<td><strong>El vecino</strong></td>
+<td>Miembro o administrador de una comunidad</td>
+<td>Autoconsumo colectivo, mayorías, reparto</td>
+<td>Alto (leads B2B pequeños)</td>
+</tr>
+<tr>
+<td><strong>El curioso</strong></td>
+<td>Persona informándose sin decisión inmediata</td>
+<td>Cómo funciona, si es legal, mitos</td>
+<td>Bajo (AdSense puro)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Distribución de intención esperada del tráfico:</strong></p>
+<ul>
+<li>Informativa: 55 %</li>
+<li>Comercial / investigación y comparativa: 20 %</li>
+<li>Transaccional (presupuesto, contratar): 15 %</li>
+<li>Local o de navegación: 10 %</li>
+</ul>
+<p>Esta mezcla es favorable: una parte del tráfico informativo "cae" hacia páginas comerciales gracias al enlazado interno y a las calculadoras.</p>
+<h2 id="2-justificacion-del-nicho">2. Justificación del nicho</h2>
+<h3 id="21-por-que-es-rentable-en-adsense">2.1 Por qué es rentable en AdSense</h3>
+<ul>
+<li><strong>Anunciantes con presupuesto.</strong> Instaladoras, comercializadoras de electricidad, fabricantes de baterías e inversores, financieras y aseguradoras pujan por estas audiencias. Cuanto mayor es el valor del cliente para el anunciante, mayor es la puja.</li>
+<li><strong>Alta intención comercial incluso en contenido informativo.</strong> Quien lee "cuánto cuesta una instalación de 5 kW" es un cliente potencial. Google lo sabe y sirve anuncios relevantes, lo que mejora el CTR y el CPC.</li>
+<li><strong>Audiencia de propietarios con poder adquisitivo medio-alto</strong>, un perfil que los anunciantes valoran.</li>
+<li><strong>Contenido evergreen con picos.</strong> La base de consultas es estable y la actualidad normativa genera picos adicionales.</li>
+</ul>
+<p><strong>Advertencia de realismo:</strong> el mercado hispanohablante paga bastante menos que el anglosajón. AdSense por sí solo convierte este nicho en un negocio <em>decente</em>, no <em>excepcional</em>. Lo que lo hace realmente atractivo es que el mismo tráfico se puede monetizar además con leads (sección 6).</p>
+<h3 id="22-cpc-estimado">2.2 CPC estimado</h3>
+<p>Diferencia importante: la <strong>puja sugerida</strong> (lo que paga el anunciante, visible en Keyword Planner) no es lo que cobra el editor. Google retiene alrededor del 32 % del importe de cada clic y, además, no todos los clics se subastan al máximo.</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Tipo de contenido</th>
+<th>Puja sugerida anunciante (estimada)</th>
+<th>CPC real para el editor (estimado)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Precios, presupuestos, instaladoras</td>
+<td>1,50–4,00 €</td>
+<td>0,25–0,70 €</td>
+</tr>
+<tr>
+<td>Baterías y almacenamiento</td>
+<td>0,80–2,50 €</td>
+<td>0,15–0,45 €</td>
+</tr>
+<tr>
+<td>Ayudas y subvenciones</td>
+<td>0,60–1,80 €</td>
+<td>0,10–0,35 €</td>
+</tr>
+<tr>
+<td>Trámites y legal</td>
+<td>0,50–1,50 €</td>
+<td>0,10–0,30 €</td>
+</tr>
+<tr>
+<td>Mantenimiento y técnico</td>
+<td>0,30–1,00 €</td>
+<td>0,05–0,20 €</td>
+</tr>
+<tr>
+<td><strong>Media ponderada del sitio</strong></td>
+<td></td>
+<td><strong>≈ 0,15–0,40 €</strong></td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="23-rpm-estimado">2.3 RPM estimado</h3>
+<ul>
+<li><strong>RPM de página (por 1.000 páginas vistas):</strong> 4–9 € para un sitio bien optimizado en España. Se usa <strong>6 €</strong> como valor central de planificación.</li>
+<li><strong>RPM de sesión:</strong> 6–13 € con 1,4–1,6 páginas por sesión.</li>
+<li>Los sitios con mucho tráfico móvil, sin optimizar posiciones y con velocidad pobre caen por debajo de 3 €.</li>
+<li>Los sitios con audiencia local española, buen contenido comercial y buena visibilidad de anuncios pueden acercarse a 9–12 € en el cuarto trimestre.</li>
+</ul>
+<h3 id="24-estacionalidad">2.4 Estacionalidad</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Periodo</th>
+<th>Comportamiento</th>
+<th>Efecto</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Enero–febrero</strong></td>
+<td>Demanda baja; RPM más bajo del año</td>
+<td>Buen momento para producir contenido</td>
+</tr>
+<tr>
+<td><strong>Marzo–junio</strong></td>
+<td>Pico de instalación, subida del sol y campaña de la Renta (deducciones)</td>
+<td>Máximo tráfico de ayudas y precios</td>
+</tr>
+<tr>
+<td><strong>Julio–agosto</strong></td>
+<td>Olas de calor y picos de precio de luz; búsquedas de rendimiento</td>
+<td>Tráfico medio; menos decisiones de compra</td>
+</tr>
+<tr>
+<td><strong>Septiembre–octubre</strong></td>
+<td>Vuelta a la rutina, planificación previa al invierno</td>
+<td>Repunte de precio y baterías</td>
+</tr>
+<tr>
+<td><strong>Noviembre–diciembre</strong></td>
+<td>Facturas altas, ofertas de fin de año, deducciones de cierre fiscal</td>
+<td><strong>RPM más alto del año</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Eventos que disparan la demanda:</strong> cambios normativos, nuevas convocatorias de ayudas, picos de precio de la electricidad y apagones (tras el gran apagón de abril de 2025 subió con fuerza el interés por baterías y modo isla).</p>
+<h3 id="25-tendencias-crece-o-no">2.5 Tendencias: ¿crece o no?</h3>
+<p>Balance honesto:</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Señal</th>
+<th>Dirección</th>
+<th>Implicación</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Potencia acumulada de autoconsumo</td>
+<td>↑ (9,3 GW)</td>
+<td>Base instalada enorme que necesita optimizar y mantener</td>
+</tr>
+<tr>
+<td>Nuevas instalaciones residenciales</td>
+<td>↓ (−17 % en 2025)</td>
+<td>Menos "primeras compras"; más competencia por cada cliente</td>
+</tr>
+<tr>
+<td>Baterías residenciales</td>
+<td>↑↑ (+99 % en hogares)</td>
+<td>Subnicho con mayor crecimiento</td>
+</tr>
+<tr>
+<td>Regulación</td>
+<td>En movimiento (RDL 7/2026, nuevo RD pendiente)</td>
+<td>Muchas oportunidades de contenido nuevo</td>
+</tr>
+<tr>
+<td>Ayudas directas</td>
+<td>↓ (fin del Next Generation)</td>
+<td>La pregunta del usuario cambia a "¿compensa sin ayudas?"</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Conclusión:</strong> el nicho no está en fase de explosión, sino de <strong>consolidación con crecimiento en almacenamiento y optimización</strong>. Es un buen momento para entrar con un enfoque de "guía independiente" y no de "captar al recién llegado".</p>
+<p><strong>Riesgo de tendencia a vigilar:</strong> los resúmenes de IA de Google (AI Overviews) reducen los clics en consultas puramente informativas. La mitigación (calculadoras, datos propios, marca, comparativas) se detalla en las secciones 5 y 10.</p>
+<h2 id="3-subnichos-y-categorias">3. Subnichos y categorías</h2>
+<h3 id="31-division-en-subnichos">3.1 División en subnichos</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Subnicho</th>
+<th>Descripción</th>
+<th>Valor principal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>A. Fundamentos</strong></td>
+<td>Cómo funciona, tamaños, tipos de instalación</td>
+<td>Tráfico y autoridad</td>
+</tr>
+<tr>
+<td><strong>B. Costes y precios</strong></td>
+<td>Presupuestos, financiación, amortización</td>
+<td>Leads y AdSense de alto CPC</td>
+</tr>
+<tr>
+<td><strong>C. Ayudas y fiscalidad</strong></td>
+<td>Subvenciones, IRPF, IBI, ICIO</td>
+<td>Tráfico estacional masivo</td>
+</tr>
+<tr>
+<td><strong>D. Baterías y almacenamiento</strong></td>
+<td>Física vs virtual, tamaños, marcas</td>
+<td>Subnicho en mayor crecimiento</td>
+</tr>
+<tr>
+<td><strong>E. Legalización y trámites</strong></td>
+<td>Pasos, documentos, plazos</td>
+<td>Tráfico de bajo competidor</td>
+</tr>
+<tr>
+<td><strong>F. Excedentes y factura</strong></td>
+<td>Compensación, comercializadoras, tarifas</td>
+<td>Afiliación a comercializadoras</td>
+</tr>
+<tr>
+<td><strong>G. Equipos</strong></td>
+<td>Paneles, inversores, estructuras, cargadores</td>
+<td>Comparativas y afiliación</td>
+</tr>
+<tr>
+<td><strong>H. Comunidades y colectivo</strong></td>
+<td>Autoconsumo colectivo, juntas, reparto</td>
+<td>Poca competencia</td>
+</tr>
+<tr>
+<td><strong>I. Mantenimiento y problemas</strong></td>
+<td>Rendimiento, limpieza, garantías</td>
+<td>Autoridad y fidelización</td>
+</tr>
+<tr>
+<td><strong>J. Herramientas</strong></td>
+<td>Calculadoras y simuladores</td>
+<td>Enlaces, retención y leads</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="32-estructura-de-categorias-de-la-web">3.2 Estructura de categorías de la web</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Categoría (menú)</th>
+<th>URL</th>
+<th>Subnichos</th>
+<th>Por qué existe</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Guías</strong></td>
+<td><code>/guias/</code></td>
+<td>A</td>
+<td>Puerta de entrada; enlaza a todo lo demás</td>
+</tr>
+<tr>
+<td><strong>Precios</strong></td>
+<td><code>/precios/</code></td>
+<td>B</td>
+<td>Categoría de mayor valor comercial</td>
+</tr>
+<tr>
+<td><strong>Ayudas</strong></td>
+<td><code>/ayudas/</code></td>
+<td>C</td>
+<td>Motor de tráfico estacional y de enlaces</td>
+</tr>
+<tr>
+<td><strong>Baterías</strong></td>
+<td><code>/baterias/</code></td>
+<td>D</td>
+<td>Subnicho en crecimiento con afiliación</td>
+</tr>
+<tr>
+<td><strong>Trámites</strong></td>
+<td><code>/tramites/</code></td>
+<td>E</td>
+<td>Resuelve un dolor real con poca competencia</td>
+</tr>
+<tr>
+<td><strong>Excedentes y factura</strong></td>
+<td><code>/excedentes-factura/</code></td>
+<td>F</td>
+<td>Conecta con afiliación a comercializadoras</td>
+</tr>
+<tr>
+<td><strong>Equipos</strong></td>
+<td><code>/equipos/</code></td>
+<td>G</td>
+<td>Comparativas monetizables</td>
+</tr>
+<tr>
+<td><strong>Comunidades</strong></td>
+<td><code>/comunidades/</code></td>
+<td>H</td>
+<td>Nicho poco disputado</td>
+</tr>
+<tr>
+<td><strong>Mantenimiento</strong></td>
+<td><code>/mantenimiento/</code></td>
+<td>I</td>
+<td>Retención y autoridad temática</td>
+</tr>
+<tr>
+<td><strong>Calculadoras</strong></td>
+<td><code>/calculadoras/</code></td>
+<td>J</td>
+<td>Diferencial frente a la competencia; captura de leads</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="33-por-que-esta-arquitectura">3.3 Por qué esta arquitectura</h3>
+<ol>
+<li><strong>Refleja el viaje del usuario:</strong> entender, calcular, financiar, legalizar, optimizar. Cada categoría empuja al usuario a la siguiente.</li>
+<li><strong>Concentra autoridad temática (topical authority).</strong> Cada categoría contiene una guía maestra (pilar) y de 6 a 10 artículos satélite; Google reconoce la profundidad.</li>
+<li><strong>Separa intenciones comerciales de informativas</strong>, lo que permite colocar módulos de lead gen solo donde convierten.</li>
+<li><strong>Diez categorías es un máximo razonable.</strong> Más dispersa la autoridad; menos mezcla intenciones.</li>
+</ol>
+<h2 id="4-plan-de-contenido-completo">4. Plan de contenido completo</h2>
+<p><strong>83 artículos base</strong> organizados en 10 categorías, más una fase de expansión. Cada título está pensado como <em>long tail</em>: específico, con el dato o el matiz que la competencia suele omitir.</p>
+<p><strong>Cómo leer las tablas:</strong></p>
+<ul>
+<li><strong>Intención:</strong> Informativa · Comercial (investigación previa a la compra) · Comparativa · Transaccional · Herramienta · Regional</li>
+<li><strong>Ola:</strong> 1 = publicar en los primeros 2 meses (25 artículos) · 2 = meses 3–4 (25 artículos) · 3 = meses 5–12 (33 artículos)</li>
+<li>Los títulos con año (2026) deben <strong>actualizarse cada 6 meses</strong>; forman parte del plan editorial.</li>
+</ul>
+<h3 id="41-categoria-guias-fundamentos">4.1 Categoría: Guías (fundamentos)</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Título SEO</th>
+<th>Intención</th>
+<th>Ola</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Cómo funcionan las placas solares en una casa: guía paso a paso para principiantes</td>
+<td>Informativa</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>¿Merece la pena instalar placas solares en 2026 sin subvenciones? Análisis con números reales</td>
+<td>Comercial</td>
+<td>1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Autoconsumo con excedentes o sin excedentes: cuál elegir y por qué</td>
+<td>Comparativa</td>
+<td>1</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Instalación aislada o conectada a red: diferencias, costes y cuándo conviene cada una</td>
+<td>Comparativa</td>
+<td>2</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Cuántas placas solares necesito para mi casa según mi factura de luz</td>
+<td>Informativa</td>
+<td>1</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Qué potencia necesito: 3, 4, 5 o 6 kWp explicados con ejemplos de consumo real</td>
+<td>Informativa</td>
+<td>2</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Placas solares en un piso o adosado: opciones reales si no tienes tejado propio</td>
+<td>Informativa</td>
+<td>3</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Placas solares en balcón o terraza: kits plug and play, legalidad y rendimiento real</td>
+<td>Comercial</td>
+<td>3</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Orientación e inclinación ideal de las placas solares en España según tu zona</td>
+<td>Informativa</td>
+<td>3</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Cuánto se ahorra realmente con placas solares: 5 casos reales por tipo de vivienda</td>
+<td>Comercial</td>
+<td>1</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="42-categoria-precios">4.2 Categoría: Precios</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Título SEO</th>
+<th>Intención</th>
+<th>Ola</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>11</td>
+<td>Precio de instalar placas solares en una vivienda en 2026: tabla por potencia y tipo de instalación</td>
+<td>Comercial</td>
+<td>1</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Cuánto cuesta una instalación solar de 3 kW llave en mano (con y sin batería)</td>
+<td>Transaccional</td>
+<td>1</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Cuánto cuesta una instalación solar de 5 kW con batería: desglose de partidas</td>
+<td>Transaccional</td>
+<td>2</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Placas solares con financiación: cuotas, intereses reales y si compensa financiar</td>
+<td>Comercial</td>
+<td>2</td>
+</tr>
+<tr>
+<td>15</td>
+<td>Placas solares en renting o alquiler: ventajas, cláusulas trampa y comparativa de precios</td>
+<td>Comparativa</td>
+<td>1</td>
+</tr>
+<tr>
+<td>16</td>
+<td>En cuántos años se amortizan las placas solares: cálculo por comunidad autónoma</td>
+<td>Informativa</td>
+<td>1</td>
+</tr>
+<tr>
+<td>17</td>
+<td>Cómo comparar presupuestos de placas solares: checklist de 12 puntos antes de firmar</td>
+<td>Comercial</td>
+<td>1</td>
+</tr>
+<tr>
+<td>18</td>
+<td>Cuánto cuesta el mantenimiento anual de una instalación fotovoltaica doméstica</td>
+<td>Informativa</td>
+<td>2</td>
+</tr>
+<tr>
+<td>19</td>
+<td>Placas solares baratas: qué esperar de una oferta low cost y qué riesgos tiene</td>
+<td>Comercial</td>
+<td>3</td>
+</tr>
+<tr>
+<td>20</td>
+<td>Precio por vatio pico (€/Wp): cómo calcularlo y cuándo una oferta es razonable</td>
+<td>Informativa</td>
+<td>2</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="43-categoria-ayudas">4.3 Categoría: Ayudas</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Título SEO</th>
+<th>Intención</th>
+<th>Ola</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>21</td>
+<td>Subvenciones para placas solares en 2026: qué ayudas siguen vigentes y cuáles han terminado</td>
+<td>Informativa</td>
+<td>1</td>
+</tr>
+<tr>
+<td>22</td>
+<td>Deducción del IRPF por placas solares: requisitos, importes y cómo aplicarla en la Renta</td>
+<td>Informativa</td>
+<td>1</td>
+</tr>
+<tr>
+<td>23</td>
+<td>Certificado de eficiencia energética para deducir: qué es, cuánto cuesta y cómo conseguirlo</td>
+<td>Informativa</td>
+<td>2</td>
+</tr>
+<tr>
+<td>24</td>
+<td>Bonificación del IBI por placas solares: cómo solicitarla, porcentajes y plazos</td>
+<td>Informativa</td>
+<td>1</td>
+</tr>
+<tr>
+<td>25</td>
+<td>Bonificación del ICIO por instalar placas solares: cómo pedirla y cuánto te ahorras</td>
+<td>Informativa</td>
+<td>2</td>
+</tr>
+<tr>
+<td>26</td>
+<td>Ayudas para placas solares en Andalucía en 2026: deducciones, subvenciones y bonificaciones</td>
+<td>Regional</td>
+<td>1</td>
+</tr>
+<tr>
+<td>27</td>
+<td>Ayudas para placas solares en la Comunidad Valenciana en 2026: IVACE, IBI e ICIO</td>
+<td>Regional</td>
+<td>1</td>
+</tr>
+<tr>
+<td>28</td>
+<td>Ayudas para placas solares en Cataluña en 2026: qué existe y cómo solicitarlo</td>
+<td>Regional</td>
+<td>2</td>
+</tr>
+<tr>
+<td>29</td>
+<td>Ayudas para placas solares en Madrid en 2026: comunidad y ayuntamientos</td>
+<td>Regional</td>
+<td>2</td>
+</tr>
+<tr>
+<td>30</td>
+<td>Ayudas para baterías de autoconsumo: qué existe hoy y qué esperar del nuevo Real Decreto</td>
+<td>Informativa</td>
+<td>2</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="44-categoria-baterias">4.4 Categoría: Baterías</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Título SEO</th>
+<th>Intención</th>
+<th>Ola</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>31</td>
+<td>¿Merece la pena poner batería a tus placas solares en 2026? Cálculo con tres perfiles de consumo</td>
+<td>Comercial</td>
+<td>1</td>
+</tr>
+<tr>
+<td>32</td>
+<td>Cuánto cuesta una batería solar doméstica: precio por kWh instalado</td>
+<td>Transaccional</td>
+<td>1</td>
+</tr>
+<tr>
+<td>33</td>
+<td>Batería de litio LFP o NMC: diferencias, seguridad y cuál elegir</td>
+<td>Comparativa</td>
+<td>2</td>
+</tr>
+<tr>
+<td>34</td>
+<td>Cuántos kWh de batería necesito para mi casa: método de cálculo con ejemplos</td>
+<td>Informativa</td>
+<td>2</td>
+</tr>
+<tr>
+<td>35</td>
+<td>Batería virtual: qué es, cómo funciona y qué comercializadoras la ofrecen</td>
+<td>Informativa</td>
+<td>1</td>
+</tr>
+<tr>
+<td>36</td>
+<td>Batería virtual o batería física: cuál te ahorra más según tu perfil</td>
+<td>Comparativa</td>
+<td>2</td>
+</tr>
+<tr>
+<td>37</td>
+<td>Mejores baterías solares domésticas 2026: comparativa de precio, ciclos y garantía</td>
+<td>Comparativa</td>
+<td>2</td>
+</tr>
+<tr>
+<td>38</td>
+<td>Huawei Luna 2000 frente a BYD Battery-Box: comparativa de rendimiento y precio</td>
+<td>Comparativa</td>
+<td>3</td>
+</tr>
+<tr>
+<td>39</td>
+<td>Placas solares con batería en caso de apagón: qué pasa realmente con tu casa (modo backup e isla)</td>
+<td>Informativa</td>
+<td>2</td>
+</tr>
+<tr>
+<td>40</td>
+<td>Vida útil de una batería solar: ciclos, degradación y qué cubre la garantía</td>
+<td>Informativa</td>
+<td>3</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="45-categoria-tramites">4.5 Categoría: Trámites</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Título SEO</th>
+<th>Intención</th>
+<th>Ola</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>41</td>
+<td>Cómo legalizar una instalación de autoconsumo paso a paso (RD 244/2019)</td>
+<td>Informativa</td>
+<td>1</td>
+</tr>
+<tr>
+<td>42</td>
+<td>Documentos necesarios para legalizar placas solares: memoria técnica, boletín, CIE y más</td>
+<td>Informativa</td>
+<td>3</td>
+</tr>
+<tr>
+<td>43</td>
+<td>Cuánto tarda en legalizarse una instalación de autoconsumo según tu comunidad</td>
+<td>Informativa</td>
+<td>2</td>
+</tr>
+<tr>
+<td>44</td>
+<td>Licencia de obra para placas solares: cuándo es necesaria y cuándo basta una comunicación</td>
+<td>Informativa</td>
+<td>3</td>
+</tr>
+<tr>
+<td>45</td>
+<td>Placas solares en comunidad de propietarios: cómo pedir permiso y qué mayoría necesitas</td>
+<td>Informativa</td>
+<td>2</td>
+</tr>
+<tr>
+<td>46</td>
+<td>Cómo dar de alta el contrato de excedentes con tu comercializadora</td>
+<td>Informativa</td>
+<td>3</td>
+</tr>
+<tr>
+<td>47</td>
+<td>Certificado de instalación eléctrica (CIE): qué es, quién lo emite y cuánto cuesta</td>
+<td>Informativa</td>
+<td>3</td>
+</tr>
+<tr>
+<td>48</td>
+<td>Placas solares sin legalizar: multas, riesgos y cómo regularizar una instalación antigua</td>
+<td>Informativa</td>
+<td>3</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="46-categoria-excedentes-y-factura">4.6 Categoría: Excedentes y factura</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Título SEO</th>
+<th>Intención</th>
+<th>Ola</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>49</td>
+<td>Compensación de excedentes: cómo funciona y cuánto te pagan por cada kWh</td>
+<td>Informativa</td>
+<td>1</td>
+</tr>
+<tr>
+<td>50</td>
+<td>Compensación simplificada: requisitos, límites y ejemplos reales de factura</td>
+<td>Informativa</td>
+<td>1</td>
+</tr>
+<tr>
+<td>51</td>
+<td>Cómo leer tu factura de luz con placas solares (ejemplo línea a línea)</td>
+<td>Informativa</td>
+<td>2</td>
+</tr>
+<tr>
+<td>52</td>
+<td>Mejores comercializadoras para compensar excedentes en 2026: comparativa</td>
+<td>Comparativa</td>
+<td>1</td>
+</tr>
+<tr>
+<td>53</td>
+<td>Vender excedentes o compensarlos: qué te conviene según tu consumo</td>
+<td>Comparativa</td>
+<td>2</td>
+</tr>
+<tr>
+<td>54</td>
+<td>Qué pasa con los excedentes que no se compensan: saldo mensual y pérdida</td>
+<td>Informativa</td>
+<td>3</td>
+</tr>
+<tr>
+<td>55</td>
+<td>Cuánto pagan las comercializadoras por kWh de excedente: tabla actualizada</td>
+<td>Comparativa</td>
+<td>3</td>
+</tr>
+<tr>
+<td>56</td>
+<td>Mejor tarifa de luz si tienes placas solares: PVPC o mercado libre</td>
+<td>Comparativa</td>
+<td>2</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="47-categoria-equipos">4.7 Categoría: Equipos</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Título SEO</th>
+<th>Intención</th>
+<th>Ola</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>57</td>
+<td>Tipos de paneles solares: monocristalino, policristalino y TOPCon, y cuál te conviene</td>
+<td>Comparativa</td>
+<td>2</td>
+</tr>
+<tr>
+<td>58</td>
+<td>Mejores paneles solares para casa en 2026: ranking por eficiencia, garantía y precio</td>
+<td>Comparativa</td>
+<td>3</td>
+</tr>
+<tr>
+<td>59</td>
+<td>Inversor híbrido o inversor de string: diferencias y cuál necesitas</td>
+<td>Comparativa</td>
+<td>2</td>
+</tr>
+<tr>
+<td>60</td>
+<td>Microinversores u optimizadores: cuándo merece la pena pagar más</td>
+<td>Comparativa</td>
+<td>3</td>
+</tr>
+<tr>
+<td>61</td>
+<td>Mejores inversores híbridos 2026: comparativa de Huawei, Fronius, Solax y Growatt</td>
+<td>Comparativa</td>
+<td>3</td>
+</tr>
+<tr>
+<td>62</td>
+<td>Estructuras para placas solares: teja, chapa, cubierta plana y suelo</td>
+<td>Informativa</td>
+<td>3</td>
+</tr>
+<tr>
+<td>63</td>
+<td>Cargador de coche eléctrico con excedentes solares: cómo funciona y qué equipo elegir</td>
+<td>Comercial</td>
+<td>2</td>
+</tr>
+<tr>
+<td>64</td>
+<td>Aerotermia y placas solares: cómo combinarlas y cuánto se ahorra</td>
+<td>Comercial</td>
+<td>2</td>
+</tr>
+<tr>
+<td>65</td>
+<td>Derivador de excedentes para termo eléctrico: qué es, precio y ahorro</td>
+<td>Comercial</td>
+<td>3</td>
+</tr>
+<tr>
+<td>66</td>
+<td>Kits solares autoinstalables: qué dice la ley, riesgos y cuándo no conviene</td>
+<td>Informativa</td>
+<td>3</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="48-categoria-comunidades">4.8 Categoría: Comunidades</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Título SEO</th>
+<th>Intención</th>
+<th>Ola</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>67</td>
+<td>Autoconsumo colectivo: qué es y cómo montarlo en tu comunidad de vecinos</td>
+<td>Informativa</td>
+<td>1</td>
+</tr>
+<tr>
+<td>68</td>
+<td>Coeficientes de reparto en autoconsumo colectivo: tipos, ejemplos y cómo elegirlos</td>
+<td>Informativa</td>
+<td>3</td>
+</tr>
+<tr>
+<td>69</td>
+<td>Autoconsumo compartido en un radio de 5 km: qué es y a quién beneficia</td>
+<td>Informativa</td>
+<td>3</td>
+</tr>
+<tr>
+<td>70</td>
+<td>Comunidades energéticas: cómo funcionan y cómo unirte a una</td>
+<td>Informativa</td>
+<td>3</td>
+</tr>
+<tr>
+<td>71</td>
+<td>Placas solares en la cubierta comunitaria: acuerdo de junta, mayorías y modelo de acta</td>
+<td>Informativa</td>
+<td>3</td>
+</tr>
+<tr>
+<td>72</td>
+<td>Placas solares en zonas comunes: ahorro real en ascensor, garaje y alumbrado</td>
+<td>Comercial</td>
+<td>3</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="49-categoria-mantenimiento">4.9 Categoría: Mantenimiento</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Título SEO</th>
+<th>Intención</th>
+<th>Ola</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>73</td>
+<td>Mantenimiento de placas solares: qué revisar y cada cuánto tiempo</td>
+<td>Informativa</td>
+<td>3</td>
+</tr>
+<tr>
+<td>74</td>
+<td>Cómo limpiar placas solares sin dañarlas (y cuándo no hace falta)</td>
+<td>Informativa</td>
+<td>3</td>
+</tr>
+<tr>
+<td>75</td>
+<td>Mi instalación solar produce menos de lo esperado: 9 causas habituales y cómo diagnosticarlas</td>
+<td>Informativa</td>
+<td>3</td>
+</tr>
+<tr>
+<td>76</td>
+<td>Cómo monitorizar tu instalación fotovoltaica: apps, datos que importan y alertas</td>
+<td>Informativa</td>
+<td>3</td>
+</tr>
+<tr>
+<td>77</td>
+<td>Garantías de placas solares: qué cubre la de paneles, inversor y batería</td>
+<td>Informativa</td>
+<td>3</td>
+</tr>
+<tr>
+<td>78</td>
+<td>Qué hacer si tu empresa instaladora quiebra: garantías, servicio técnico y alternativas</td>
+<td>Informativa</td>
+<td>3</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="410-categoria-calculadoras">4.10 Categoría: Calculadoras</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Título SEO</th>
+<th>Intención</th>
+<th>Ola</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>79</td>
+<td>Calculadora de placas solares: cuántas necesitas y cuánto ahorrarás</td>
+<td>Herramienta</td>
+<td>1</td>
+</tr>
+<tr>
+<td>80</td>
+<td>Calculadora de amortización de placas solares por provincia</td>
+<td>Herramienta</td>
+<td>1</td>
+</tr>
+<tr>
+<td>81</td>
+<td>Calculadora de batería solar: kWh necesarios según tu consumo nocturno</td>
+<td>Herramienta</td>
+<td>3</td>
+</tr>
+<tr>
+<td>82</td>
+<td>Simulador de excedentes: cuánto cobrarás por la energía que viertes a la red</td>
+<td>Herramienta</td>
+<td>3</td>
+</tr>
+<tr>
+<td>83</td>
+<td>Plantilla descargable para comparar presupuestos de placas solares (Excel)</td>
+<td>Herramienta</td>
+<td>3</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="411-fase-de-expansion-despues-de-los-83-articulos">4.11 Fase de expansión (después de los 83 artículos)</h3>
+<p>Solo cuando el sitio ya tenga autoridad y tráfico. Todas deben tener <strong>datos propios</strong>, para evitar contenido delgado o duplicado a escala:</p>
+<ul>
+<li><strong>Páginas por comunidad autónoma</strong> (17): precio medio, horas de sol, ayudas vigentes y trámites locales.</li>
+<li><strong>Páginas por provincia</strong> (50): "Placas solares en [provincia]: precio, ayudas y rendimiento esperado". Publicar solo las de mayor demanda y con información local real.</li>
+<li><strong>Comparativas de marcas</strong> (Huawei, Fronius, SMA, Solax, Growatt, BYD, Tesla, LG y otras).</li>
+<li><strong>Estudio anual propio</strong> con precios medios por CCAA: genera enlaces y menciones en prensa.</li>
+<li><strong>Contenido reactivo:</strong> noticias regulatorias (nuevo Real Decreto de Autoconsumo, cambios de IRPF) con actualización de los artículos afectados.</li>
+</ul>
+<h2 id="5-estrategia-seo">5. Estrategia SEO</h2>
+<h3 id="51-tipos-de-keywords-a-atacar">5.1 Tipos de keywords a atacar</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Ejemplo</th>
+<th>Cómo se usa</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Long tail de problema</strong></td>
+<td>"mi instalación solar produce menos de lo esperado"</td>
+<td>Base del tráfico inicial; baja dificultad</td>
+</tr>
+<tr>
+<td><strong>Long tail regional</strong></td>
+<td>"ayudas placas solares Andalucía 2026"</td>
+<td>Estacional y muy útil para enlaces</td>
+</tr>
+<tr>
+<td><strong>Comparativas</strong></td>
+<td>"batería virtual o batería física"</td>
+<td>Puente hacia afiliación</td>
+</tr>
+<tr>
+<td><strong>Transaccionales de coste</strong></td>
+<td>"cuánto cuesta instalación 5 kW con batería"</td>
+<td>Captura de leads y CPC alto</td>
+</tr>
+<tr>
+<td><strong>Preguntas (People Also Ask)</strong></td>
+<td>"¿se pueden poner placas solares en un piso?"</td>
+<td>Bloques FAQ y snippets</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Reglas de selección de keywords:</strong></p>
+<ol>
+<li><strong>Prioridad inicial:</strong> dificultad baja (KD ≤ 25 en Semrush o equivalente) y volumen ≥ 100 búsquedas/mes.</li>
+<li><strong>Una keyword principal por URL</strong>, con 3–8 secundarias.</li>
+<li><strong>Evitar los términos genéricos</strong> durante el primer año.</li>
+<li><strong>Verificar la SERP a mano:</strong> si los diez primeros resultados son grandes marcas con contenido excelente, se descarta; si hay foros o artículos antiguos, se ataca.</li>
+<li><strong>Fuentes de ideas gratuitas:</strong> Search Console, People Also Ask, sugerencias de Google, foros y grupos de propietarios, comentarios de YouTube sobre instalaciones.</li>
+</ol>
+<h3 id="52-estrategia-de-enlazado-interno">5.2 Estrategia de enlazado interno</h3>
+<p><strong>Modelo pilar-satélite:</strong></p>
+<ul>
+<li>Cada categoría tiene una <strong>guía pilar</strong> (3.000–4.500 palabras) que enlaza a todos sus satélites.</li>
+<li>Cada satélite enlaza al pilar y a 2–4 artículos hermanos.</li>
+<li>Los satélites de cada categoría enlazan de forma selectiva a otras categorías según el viaje del usuario.</li>
+</ul>
+<p><strong>Reglas operativas:</strong></p>
+<ol>
+<li>Mínimo <strong>3 enlaces internos salientes</strong> y <strong>3 entrantes</strong> por artículo en los primeros 30 días desde su publicación.</li>
+<li><strong>Anchor text variado y descriptivo</strong>; evitar "haz clic aquí" y no repetir el mismo ancla exacta más de dos veces hacia la misma URL.</li>
+<li>Los artículos con más autoridad (guías de ayudas, precios) <strong>enlazan hacia páginas comerciales</strong> (comparativas, calculadoras, formulario de presupuesto).</li>
+<li><strong>Módulo "Siguiente paso"</strong> al final de cada artículo: enlace a la siguiente decisión del usuario.</li>
+<li><strong>Migas de pan (breadcrumbs)</strong> y bloque de "Artículos relacionados" automáticos.</li>
+<li><strong>Auditoría mensual de páginas huérfanas</strong> (Screaming Frog, gratuito hasta 500 URLs, o Rank Math).</li>
+</ol>
+<p><strong>Flujo de enlazado típico:</strong></p>
+<pre><code>Guía pilar &quot;Autoconsumo&quot; → ¿Merece la pena? → Precio 5 kW → Calculadora de amortización → Formulario de presupuesto
+                        ↘ Ayudas 2026 → Deducción IRPF → Certificado energético
+                        ↘ Baterías → Batería virtual → Comparativa de comercializadoras (afiliación)
+</code></pre>
+<h3 id="53-arquitectura-web-recomendada">5.3 Arquitectura web recomendada</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Elemento</th>
+<th>Recomendación</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CMS</strong></td>
+<td>WordPress con tema ligero (GeneratePress, Kadence o Astra)</td>
+</tr>
+<tr>
+<td><strong>SEO on-page</strong></td>
+<td>Rank Math o Yoast</td>
+</tr>
+<tr>
+<td><strong>Hosting</strong></td>
+<td>Servidor con LiteSpeed o similar, caché y CDN; 6–15 €/mes</td>
+</tr>
+<tr>
+<td><strong>URLs</strong></td>
+<td><code>dominio.es/categoria/slug-corto/</code>, sin fechas en la URL</td>
+</tr>
+<tr>
+<td><strong>Profundidad</strong></td>
+<td>Cualquier página a un máximo de 3 clics desde la home</td>
+</tr>
+<tr>
+<td><strong>Datos estructurados</strong></td>
+<td>Article, FAQPage, HowTo (donde aplique), BreadcrumbList, Organization y Person para autores</td>
+</tr>
+<tr>
+<td><strong>Rendimiento</strong></td>
+<td>LCP &lt; 2,5 s, CLS &lt; 0,1, imágenes WebP, reservar altura de los huecos publicitarios</td>
+</tr>
+<tr>
+<td><strong>Páginas obligatorias</strong></td>
+<td>Quiénes somos, autores, metodología editorial, contacto, política de privacidad, cookies, aviso legal y divulgación de afiliación</td>
+</tr>
+<tr>
+<td><strong>Consentimiento</strong></td>
+<td>Plataforma de gestión de consentimiento certificada por Google (obligatoria para servir anuncios en el EEE)</td>
+</tr>
+<tr>
+<td><strong>Archivo <code>ads.txt</code></strong></td>
+<td>Publicado en la raíz antes de activar AdSense</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>E-E-A-T (experiencia, pericia, autoridad y confianza).</strong> Al tratarse de decisiones económicas importantes, Google exige más señales de fiabilidad. Es innegociable:</p>
+<ul>
+<li><strong>Autores reales</strong> con biografía y experiencia verificable.</li>
+<li><strong>Revisión técnica</strong> de los artículos por un ingeniero o instalador colegiado (mención visible).</li>
+<li><strong>Fuentes oficiales citadas:</strong> BOE, IDAE, Ministerio para la Transición Ecológica, CCAA, AEAT.</li>
+<li><strong>Fecha de última actualización</strong> visible y cambios reales.</li>
+<li><strong>Divulgación clara</strong> de enlaces de afiliación y de la relación con anunciantes.</li>
+</ul>
+<h3 id="54-estrategia-de-crecimiento-y-publicacion">5.4 Estrategia de crecimiento y publicación</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Fase</th>
+<th>Periodo</th>
+<th>Artículos</th>
+<th>Objetivo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>0. Preparación</strong></td>
+<td>Semana 1–2</td>
+<td>0</td>
+<td>Dominio, hosting, diseño, páginas legales, CMP, autores, investigación de keywords</td>
+</tr>
+<tr>
+<td><strong>1. Lanzamiento</strong></td>
+<td>Mes 1–2</td>
+<td>25 (Ola 1)</td>
+<td>Base de autoridad; solicitar AdSense con al menos 25 artículos sólidos</td>
+</tr>
+<tr>
+<td><strong>2. Consolidación</strong></td>
+<td>Mes 3–4</td>
+<td>25 (Ola 2)</td>
+<td>Cubrir todas las categorías; primeras calculadoras</td>
+</tr>
+<tr>
+<td><strong>3. Escala</strong></td>
+<td>Mes 5–12</td>
+<td>33 (Ola 3) + actualizaciones</td>
+<td>8–12 artículos/mes; refrescar los que suben</td>
+</tr>
+<tr>
+<td><strong>4. Expansión</strong></td>
+<td>Mes 13–24</td>
+<td>Páginas regionales y comparativas</td>
+<td>Datos propios, digital PR, herramientas</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Reglas de calidad:</strong></p>
+<ul>
+<li><strong>Calidad sobre volumen:</strong> 25 artículos excelentes valen más que 100 mediocres.</li>
+<li><strong>Actualización sistemática:</strong> cada 6 meses para los artículos con año; cada 12 para el resto.</li>
+<li><strong>Contenido con datos propios:</strong> capturas de facturas reales, casos, tablas de precios recopilados, simulaciones.</li>
+<li><strong>Enlaces externos (link building) limpios:</strong> estudios de datos, colaboraciones con asociaciones y medios, contribuciones como experto. Sin redes de blogs privados ni compra masiva de enlaces.</li>
+</ul>
+<h2 id="6-monetizacion">6. Monetización</h2>
+<h3 id="61-como-se-monetiza-con-adsense-en-este-nicho">6.1 Cómo se monetiza con AdSense en este nicho</h3>
+<p><strong>Requisitos previos para la aprobación:</strong></p>
+<ul>
+<li>Al menos 25–30 artículos originales y útiles (2.000 palabras de media es un buen estándar)</li>
+<li>Páginas legales completas y navegación clara</li>
+<li>Dominio con algunos meses de antigüedad y tráfico orgánico inicial (no imprescindible, pero ayuda)</li>
+<li>Contenido sin plagio, sin texto generado sin revisar y sin infracciones de política</li>
+</ul>
+<p><strong>Plataformas de consentimiento:</strong> la plataforma de gestión del consentimiento debe estar certificada por Google para servir anuncios en el EEE.</p>
+<p><strong>Formatos recomendados:</strong></p>
+<ol>
+<li><strong>Anuncios automáticos (Auto ads)</strong> para los primeros 30–60 días, para recoger datos.</li>
+<li><strong>Unidades manuales en las plantillas</strong> que rinden bien, una vez que se sabe qué páginas tienen más tráfico.</li>
+<li><strong>Experimentos A/B</strong> de posiciones y de densidad.</li>
+</ol>
+<h3 id="62-posiciones-recomendadas-de-anuncios">6.2 Posiciones recomendadas de anuncios</h3>
+<p>Más del 65–70 % del tráfico será móvil. Diseña primero para móvil.</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Posición</th>
+<th>Formato</th>
+<th>Recomendación</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tras el primer o segundo párrafo</td>
+<td>Adaptable, responsive</td>
+<td>Alta visibilidad; no debe empujar el contenido principal</td>
+</tr>
+<tr>
+<td>Dentro del contenido cada ~350–450 palabras</td>
+<td>In-article / display</td>
+<td>Máximo 3–4 por artículo</td>
+</tr>
+<tr>
+<td>Antes de la tabla o de la conclusión</td>
+<td>Display</td>
+<td>Cerca del punto de decisión</td>
+</tr>
+<tr>
+<td>Final del artículo</td>
+<td>Display</td>
+<td>Buena visibilidad, bajo CTR</td>
+</tr>
+<tr>
+<td>Lateral (solo escritorio)</td>
+<td>300×600 pegajoso</td>
+<td>Alto rendimiento en escritorio</td>
+</tr>
+<tr>
+<td>Ancla inferior (móvil)</td>
+<td>Anchor</td>
+<td>Usar con cautela; verificar la política vigente</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Principios de diseño:</strong></p>
+<ul>
+<li><strong>Máximo un 30 % de la pantalla ocupada por anuncios</strong> en cualquier momento.</li>
+<li><strong>Reservar espacio</strong> para cada unidad y evitar saltos de diseño (CLS).</li>
+<li><strong>No colocar anuncios encima del formulario de lead ni de las calculadoras</strong>; compiten con tu conversión más rentable.</li>
+<li><strong>Menos anuncios en páginas de conversión</strong> (presupuesto, comparativas con afiliación) y más en las puramente informativas.</li>
+<li><strong>No hacer clic en tus propios anuncios ni pedirlo</strong>: causa suspensión de la cuenta.</li>
+</ul>
+<h3 id="63-otros-metodos-de-monetizacion">6.3 Otros métodos de monetización</h3>
+<h4 id="a-generacion-de-leads-el-metodo-mas-potente-en-este-nicho">a) Generación de leads (el método más potente en este nicho)</h4>
+<p>Redirigir a los usuarios con intención de compra hacia un formulario de "compara presupuestos" que derive el contacto a instaladoras.</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Aspecto</th>
+<th>Detalle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Modelo</strong></td>
+<td>Venta del lead cualificado a una o varias instaladoras, o comisión por instalación cerrada</td>
+</tr>
+<tr>
+<td><strong>Precio por lead (estimado)</strong></td>
+<td>15–40 € por contacto cualificado; 40–60 € en zonas o perfiles muy demandados</td>
+</tr>
+<tr>
+<td><strong>Conversión típica sobre tráfico de intención comercial</strong></td>
+<td>0,3–1,0 %</td>
+</tr>
+<tr>
+<td><strong>Requisitos legales</strong></td>
+<td>Consentimiento explícito (RGPD y LOPDGDD), texto claro sobre la cesión de datos a terceros, política de privacidad completa, cumplimiento de la LSSI</td>
+</tr>
+<tr>
+<td><strong>Cómo empezar</strong></td>
+<td>Acuerdos directos con 2–3 instaladoras locales o plataformas de leads; empezar con una o dos provincias</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Ejemplo:</strong> 10.000 sesiones comerciales/mes × 0,6 % = 60 leads × 25 € = <strong>1.500 €/mes</strong>, muy por encima de lo que generaría AdSense con ese mismo tráfico.</p>
+<h4 id="b-afiliacion">b) Afiliación</h4>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Producto</th>
+<th>Tipo de comisión (estimada)</th>
+<th>Encaje</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Comercializadoras de electricidad con compensación de excedentes</td>
+<td>Comisión por alta (10–40 €)</td>
+<td>Comparativas de excedentes y tarifas</td>
+</tr>
+<tr>
+<td>Financiación de instalaciones</td>
+<td>Comisión por solicitud o por operación</td>
+<td>Artículos de financiación y renting</td>
+</tr>
+<tr>
+<td>Tiendas de material solar y baterías</td>
+<td>2–6 % de la venta</td>
+<td>Comparativas y kits</td>
+</tr>
+<tr>
+<td>Herramientas de monitorización, cargadores</td>
+<td>3–8 %</td>
+<td>Guías de equipos</td>
+</tr>
+<tr>
+<td>Seguros para instalaciones</td>
+<td>Comisión por póliza</td>
+<td>Artículos de garantías y mantenimiento</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="c-otros-ingresos">c) Otros ingresos</h4>
+<ul>
+<li><strong>Newsletter</strong> con alertas de ayudas y cambios normativos (patrocinios a partir de ~3.000 suscriptores activos).</li>
+<li><strong>Producto digital:</strong> "Guía completa de autoconsumo para tu vivienda" o plantilla de comparación de presupuestos (9–29 €).</li>
+<li><strong>Contenido patrocinado</strong> con divulgación clara, con criterio editorial y solo de marcas verificables.</li>
+<li><strong>Red de anuncios gestionada</strong> (Mediavine, Ezoic u otras) cuando el tráfico lo permita (suele exigirse del orden de decenas de miles de sesiones/mes; comprueba requisitos actuales y compatibilidad con sitios en español antes de migrar).</li>
+</ul>
+<h3 id="64-estimacion-realista-de-ingresos-con-x-visitas">6.4 Estimación realista de ingresos con X visitas</h3>
+<p><strong>Supuestos:</strong> 1,5 páginas por sesión; 25 % del tráfico con intención comercial; tres escenarios de calidad de ejecución.</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Sesiones/mes</th>
+<th>Concepto</th>
+<th>Bajo</th>
+<th>Medio</th>
+<th>Alto</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>10.000</strong></td>
+<td>AdSense (RPM 4 / 6,5 / 9 €)</td>
+<td>60 €</td>
+<td>100 €</td>
+<td>135 €</td>
+</tr>
+<tr>
+<td></td>
+<td>Leads (conv. 0,3 / 0,6 / 1,0 %; 15 / 25 / 40 €)</td>
+<td>110 €</td>
+<td>375 €</td>
+<td>1.000 €</td>
+</tr>
+<tr>
+<td></td>
+<td>Afiliación</td>
+<td>30 €</td>
+<td>80 €</td>
+<td>150 €</td>
+</tr>
+<tr>
+<td></td>
+<td><strong>Total</strong></td>
+<td><strong>≈ 200 €</strong></td>
+<td><strong>≈ 555 €</strong></td>
+<td><strong>≈ 1.285 €</strong></td>
+</tr>
+<tr>
+<td><strong>50.000</strong></td>
+<td>AdSense</td>
+<td>300 €</td>
+<td>490 €</td>
+<td>675 €</td>
+</tr>
+<tr>
+<td></td>
+<td>Leads</td>
+<td>560 €</td>
+<td>1.875 €</td>
+<td>5.000 €</td>
+</tr>
+<tr>
+<td></td>
+<td>Afiliación</td>
+<td>150 €</td>
+<td>400 €</td>
+<td>800 €</td>
+</tr>
+<tr>
+<td></td>
+<td><strong>Total</strong></td>
+<td><strong>≈ 1.010 €</strong></td>
+<td><strong>≈ 2.765 €</strong></td>
+<td><strong>≈ 6.475 €</strong></td>
+</tr>
+<tr>
+<td><strong>100.000</strong></td>
+<td>AdSense</td>
+<td>600 €</td>
+<td>975 €</td>
+<td>1.350 €</td>
+</tr>
+<tr>
+<td></td>
+<td>Leads</td>
+<td>1.125 €</td>
+<td>3.750 €</td>
+<td>10.000 €</td>
+</tr>
+<tr>
+<td></td>
+<td>Afiliación</td>
+<td>300 €</td>
+<td>800 €</td>
+<td>1.600 €</td>
+</tr>
+<tr>
+<td></td>
+<td><strong>Total</strong></td>
+<td><strong>≈ 2.025 €</strong></td>
+<td><strong>≈ 5.525 €</strong></td>
+<td><strong>≈ 12.950 €</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Lo que estos números dicen sin adornos:</strong></p>
+<ul>
+<li>Solo con AdSense, 50.000 sesiones/mes generan aproximadamente <strong>300–675 €</strong>. Es una cifra razonable para un proyecto pequeño, pero no cambia una vida.</li>
+<li>El <strong>60–85 % del ingreso potencial procede de leads</strong>. La web de AdSense puro deja dinero sobre la mesa.</li>
+<li>El escenario "Alto" de leads solo lo consiguen proyectos con formularios muy bien situados, buen encaje local y acuerdos sólidos con instaladoras.</li>
+</ul>
+<h2 id="7-coste-de-contenido">7. Coste de contenido</h2>
+<h3 id="71-cuanto-cuesta-un-articulo-en-este-nicho">7.1 Cuánto cuesta un artículo en este nicho</h3>
+<p>Un tema técnico con normativa y cifras exige más que un redactor generalista. Rangos habituales en España (freelance directo o agencias pequeñas):</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Nivel de redactor</th>
+<th>Precio por palabra</th>
+<th>Artículo de 1.800 palabras</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Generalista de plataformas de contenido</td>
+<td>0,02–0,04 €</td>
+<td>36–72 €</td>
+</tr>
+<tr>
+<td>Redactor SEO con experiencia y algo de energía</td>
+<td>0,05–0,08 €</td>
+<td>90–145 €</td>
+</tr>
+<tr>
+<td>Especialista técnico (ingeniero, instalador)</td>
+<td>0,10–0,20 €</td>
+<td>180–360 €</td>
+</tr>
+<tr>
+<td>Revisión técnica de un artículo ya redactado</td>
+<td>—</td>
+<td>15–40 €</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Precio medio recomendado para planificar: 0,05–0,07 € por palabra</strong>, más una revisión técnica. Aproximadamente <strong>100–140 € por artículo</strong> ya revisado.</p>
+<h3 id="72-presupuesto-estimado-para-lanzar-la-web-50-articulos">7.2 Presupuesto estimado para lanzar la web (50 artículos)</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Concepto</th>
+<th>Lean</th>
+<th>Estándar</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>50 artículos (Olas 1 y 2)</td>
+<td>600–1.000 € (IA + edición propia)</td>
+<td>5.000–6.000 € (redactores + revisión técnica)</td>
+</tr>
+<tr>
+<td>Dominio <code>.es</code> (año 1)</td>
+<td>10 €</td>
+<td>10 €</td>
+</tr>
+<tr>
+<td>Hosting (año 1)</td>
+<td>80–150 €</td>
+<td>150–250 €</td>
+</tr>
+<tr>
+<td>Tema y plugins de pago</td>
+<td>0–60 €</td>
+<td>100–200 €</td>
+</tr>
+<tr>
+<td>Diseño de logotipo e identidad</td>
+<td>0–50 €</td>
+<td>100–300 €</td>
+</tr>
+<tr>
+<td>Herramienta SEO (6 meses)</td>
+<td>50–150 €</td>
+<td>300–800 €</td>
+</tr>
+<tr>
+<td>Imágenes, gráficos y tablas</td>
+<td>50–100 €</td>
+<td>200–400 €</td>
+</tr>
+<tr>
+<td>Asesoría legal RGPD/textos legales</td>
+<td>0–100 €</td>
+<td>200–400 €</td>
+</tr>
+<tr>
+<td><strong>Total aproximado</strong></td>
+<td><strong>≈ 800–1.600 €</strong></td>
+<td><strong>≈ 6.000–8.400 €</strong></td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="73-alternativa-usando-ia">7.3 Alternativa usando IA</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Enfoque</th>
+<th>Coste/artículo</th>
+<th>Calidad</th>
+<th>Riesgo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>IA sin revisión</strong></td>
+<td>1–3 €</td>
+<td>Baja: errores de normativa y cifras</td>
+<td><strong>Alto</strong>: penalización, rechazo de AdSense, daño reputacional</td>
+</tr>
+<tr>
+<td><strong>IA + edición humana básica</strong></td>
+<td>10–25 €</td>
+<td>Media</td>
+<td>Medio</td>
+</tr>
+<tr>
+<td><strong>IA + edición humana + revisión técnica + datos propios</strong></td>
+<td>40–80 €</td>
+<td>Media-alta</td>
+<td>Bajo</td>
+</tr>
+<tr>
+<td><strong>Redacción humana especializada</strong></td>
+<td>100–360 €</td>
+<td>Alta</td>
+<td>Bajo</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Recomendación:</strong> modelo <strong>híbrido</strong>.</p>
+<ol>
+<li>Redactores humanos o especialistas para las <strong>guías pilar y los artículos de dinero</strong> (precios, ayudas, trámites, comparativas).</li>
+<li>IA como <strong>apoyo</strong> para borradores, esquemas, tablas y preguntas frecuentes en artículos de menor riesgo.</li>
+<li><strong>Toda cifra, ley y ayuda debe verificarse contra una fuente primaria.</strong> La IA se equivoca con frecuencia en normativa cambiante.</li>
+<li>Añadir siempre algo que la IA no puede aportar: experiencia propia, datos recopilados, fotos reales, opinión de un técnico.</li>
+</ol>
+<p><strong>Política de Google relevante:</strong> no se penaliza el uso de IA en sí, sino la producción de contenido a escala sin valor añadido. AdSense, por su parte, rechaza sitios con "contenido de poco valor". Un sitio con 50 artículos sin revisar tiene un riesgo real de rechazo y de bajo rendimiento.</p>
+<h2 id="8-proyeccion-de-ingresos">8. Proyección de ingresos</h2>
+<h3 id="81-escenarios">8.1 Escenarios</h3>
+<p>Ingresos <strong>mensuales totales</strong> (AdSense + leads + afiliación), en euros. Se asume que los leads empiezan a monetizarse entre los meses 6 y 9.</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Mes</th>
+<th>Conservador</th>
+<th>Medio</th>
+<th>Optimista</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Sesiones mes 6</strong></td>
+<td>1.000</td>
+<td>2.500</td>
+<td>4.000</td>
+</tr>
+<tr>
+<td>Ingresos mes 6</td>
+<td>10 €</td>
+<td>40 €</td>
+<td>100 €</td>
+</tr>
+<tr>
+<td><strong>Sesiones mes 12</strong></td>
+<td>6.000</td>
+<td>15.000</td>
+<td>30.000</td>
+</tr>
+<tr>
+<td>Ingresos mes 12</td>
+<td>60 €</td>
+<td>500 €</td>
+<td>1.300 €</td>
+</tr>
+<tr>
+<td><strong>Sesiones mes 18</strong></td>
+<td>15.000</td>
+<td>40.000</td>
+<td>90.000</td>
+</tr>
+<tr>
+<td>Ingresos mes 18</td>
+<td>200 €</td>
+<td>1.900 €</td>
+<td>6.000 €</td>
+</tr>
+<tr>
+<td><strong>Sesiones mes 24</strong></td>
+<td>30.000</td>
+<td>90.000</td>
+<td>200.000</td>
+</tr>
+<tr>
+<td>Ingresos mes 24</td>
+<td>450 €</td>
+<td>4.500 €</td>
+<td>≈ 10.000 €</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Definiciones:</strong></p>
+<ul>
+<li><strong>Conservador:</strong> publicación irregular, sin acuerdo de leads o con mala conversión, contenido correcto pero poco diferenciado, algunas penalizaciones o retrasos. Es un escenario frecuente.</li>
+<li><strong>Medio:</strong> ejecución consistente, 8–12 artículos al mes, mejor enlazado, calculadoras funcionando y un acuerdo de leads que convierte. Objetivo razonable.</li>
+<li><strong>Optimista:</strong> autoridad clara, enlaces de calidad, herramientas virales, buen encaje de leads y alguna mención en medios. Lo logran los mejores proyectos (aprox. el 10 % superior).</li>
+</ul>
+<h3 id="82-tiempo-estimado-para-generar-ingresos">8.2 Tiempo estimado para generar ingresos</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Hito</th>
+<th>Plazo típico</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Aprobación de AdSense</td>
+<td>2–8 semanas tras solicitarla con ≥ 25 artículos</td>
+</tr>
+<tr>
+<td>Primeros ingresos</td>
+<td>Mes 2–4 (céntimos o pocos euros)</td>
+</tr>
+<tr>
+<td>Tráfico orgánico estable</td>
+<td>Mes 4–8 (Google suele tardar en confiar en dominios nuevos)</td>
+</tr>
+<tr>
+<td>Primeros 100 €/mes</td>
+<td>Mes 8–14 (medio)</td>
+</tr>
+<tr>
+<td>Ingresos que cubren gastos del proyecto</td>
+<td>Mes 10–18 (medio)</td>
+</tr>
+<tr>
+<td>Recuperación de la inversión (presupuesto estándar)</td>
+<td>Mes 16–20 (medio); más de 36 meses (conservador)</td>
+</tr>
+<tr>
+<td>Recuperación de la inversión (presupuesto lean)</td>
+<td>Mes 12–16 (medio); 24–30 meses (conservador)</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="83-escalabilidad-del-proyecto">8.3 Escalabilidad del proyecto</h3>
+<ol>
+<li><strong>Vertical:</strong> profundizar en subnichos (baterías, aerotermia, cargadores de coche eléctrico, eficiencia energética del hogar).</li>
+<li><strong>Geográfica:</strong> replicar el modelo en otros mercados hispanohablantes con marco regulatorio propio (por ejemplo, Chile con su sistema de generación distribuida y <em>net billing</em>, México o Colombia), adaptando toda la normativa y precios locales; también Portugal.</li>
+<li><strong>Herramientas:</strong> calculadoras avanzadas y comparadores propios como activo diferencial y de captación de enlaces.</li>
+<li><strong>Audiencia propia:</strong> newsletter y canal de vídeo para reducir la dependencia de Google.</li>
+<li><strong>Venta del activo:</strong> un sitio con tráfico y contactos estables puede venderse en los mercados de webs (múltiplos habituales de 24–40 veces el beneficio mensual, según la calidad y la estabilidad).</li>
+</ol>
+<h2 id="9-ejemplo-practico-como-seria-la-web">9. Ejemplo práctico: cómo sería la web</h2>
+<h3 id="91-marca-y-dominio">9.1 Marca y dominio</h3>
+<p><strong>Propuesta principal:</strong> <strong>AutoconsumoClaro.es</strong></p>
+<p><strong>Alternativas</strong> (verificar disponibilidad y marcas registradas antes de comprar):</p>
+<ul>
+<li>SolarEnCasa.es</li>
+<li>MiAutoconsumo.es</li>
+<li>PlacasSolaresClaras.es</li>
+<li>CuentasSolares.es</li>
+</ul>
+<p><strong>Posicionamiento:</strong> <em>"Autoconsumo solar sin humo comercial: cifras reales, ayudas al día y calculadoras para decidir bien."</em></p>
+<h3 id="92-estructura-inicial">9.2 Estructura inicial</h3>
+<p><strong>Menú principal:</strong> Guías · Precios · Ayudas · Baterías · Trámites · Excedentes · Equipos · Comunidades · Calculadoras</p>
+<p><strong>Wireframe de la portada:</strong></p>
+<pre><code>[LOGO]  Guías  Precios  Ayudas  Baterías  Trámites  Excedentes  Equipos  Comunidades  [Calculadoras]
+
+HERO
+  &quot;¿Te compensa instalar placas solares? Calcúlalo en 2 minutos&quot;
+  [Calculadora rápida: factura mensual + código postal → ahorro estimado]
+
+EMPIEZA AQUÍ (3 tarjetas)
+  [Cómo funciona]   [Cuánto cuesta]   [Qué ayudas hay hoy]
+
+AYUDAS POR COMUNIDAD AUTÓNOMA
+  [Mapa o lista de 17 CCAA con fecha de última actualización]
+
+TEMAS QUE MÁS SE BUSCAN
+  Batería virtual · Compensación de excedentes · Legalizar placas · Amortización
+
+COMPARATIVAS Y GUÍAS DESTACADAS
+  (4–6 tarjetas)
+
+CONFIANZA
+  &quot;Revisado por ingeniero colegiado nº XXXX · Fuentes oficiales · Sin publirreportajes ocultos&quot;
+
+NEWSLETTER
+  &quot;Recibe un aviso cuando cambie una ayuda o una norma&quot;
+
+FOOTER: Quiénes somos · Metodología · Contacto · Privacidad · Cookies · Aviso legal · Divulgación de afiliación
+</code></pre>
+<h3 id="93-plantilla-de-articulo-con-huecos-de-anuncio">9.3 Plantilla de artículo con huecos de anuncio</h3>
+<pre><code>H1: Precio de instalar placas solares en 2026
+Meta: autor + revisor técnico + fecha de última actualización
+
+[Resumen en 3 líneas: respuesta directa]
+--- AD 1 (responsive, tras el primer bloque) ---
+Índice (tabla de contenidos)
+Tabla de precios por potencia (elemento principal del artículo)
+Sección: qué incluye el precio y qué no
+--- AD 2 (in-article) ---
+Sección: factores que encarecen o abaratan
+CTA: &quot;Calcula tu caso&quot; (enlace a calculadora)
+--- AD 3 (in-article) ---
+Sección: cómo comparar presupuestos
+Módulo lead: &quot;Recibe hasta 3 presupuestos sin compromiso&quot;
+FAQ (5–6 preguntas con schema)
+--- AD 4 (final) ---
+Siguiente paso: &quot;En cuántos años se amortiza&quot; · &quot;Ayudas disponibles&quot;
+Artículos relacionados
+</code></pre>
+<h3 id="94-paginas-legales-y-de-confianza-imprescindibles-desde-el-dia-1">9.4 Páginas legales y de confianza imprescindibles desde el día 1</h3>
+<p>Quiénes somos (con nombres reales), Metodología editorial (cómo verificas cifras y quién revisa), Contacto, Política de privacidad y cookies con CMP certificado, Aviso legal, Divulgación de afiliación y anuncios.</p>
+<h2 id="10-conclusion">10. Conclusión</h2>
+<h3 id="101-vale-la-pena-este-nicho">10.1 ¿Vale la pena este nicho?</h3>
+<p><strong>Sí, con condiciones claras.</strong></p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Criterio</th>
+<th>Puntuación (1–10)</th>
+<th>Comentario</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Potencial de tráfico</td>
+<td>8</td>
+<td>Clúster grande con mucho long tail</td>
+</tr>
+<tr>
+<td>Competencia</td>
+<td>5</td>
+<td>Alta arriba, asequible abajo</td>
+</tr>
+<tr>
+<td>Rendimiento AdSense</td>
+<td>6</td>
+<td>Aceptable para España; no excepcional</td>
+</tr>
+<tr>
+<td>Valor de leads y afiliación</td>
+<td>9</td>
+<td>Es lo que convierte el proyecto en rentable</td>
+</tr>
+<tr>
+<td>Estabilidad de la demanda</td>
+<td>7</td>
+<td>Estacional y sensible a la regulación</td>
+</tr>
+<tr>
+<td>Barrera de entrada de contenido</td>
+<td>6</td>
+<td>Exige rigor técnico y actualización</td>
+</tr>
+<tr>
+<td><strong>Global</strong></td>
+<td><strong>7 / 10</strong></td>
+<td>Buen nicho para un proyecto serio de 18–24 meses</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Vale la pena si:</strong> aceptas construir autoridad durante 12–18 meses, inviertes en revisión técnica y calculadoras, y buscas leads además de AdSense.</p>
+<p><strong>No vale la pena si:</strong> buscas dinero rápido, quieres publicar cientos de artículos genéricos con IA sin revisar o dependes solo de AdSense.</p>
+<h3 id="102-riesgos-principales">10.2 Riesgos principales</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Riesgo</th>
+<th>Probabilidad</th>
+<th>Impacto</th>
+<th>Mitigación</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Cambios normativos y de ayudas.</strong> Hay información contradictoria sobre la continuidad de deducciones estatales en 2026 y un nuevo Real Decreto pendiente</td>
+<td>Alta</td>
+<td>Medio</td>
+<td>Contenido actualizado sistemáticamente, fechas visibles, verificación en BOE y AEAT antes de publicar</td>
+</tr>
+<tr>
+<td><strong>Desaceleración del mercado residencial</strong> (−17 % en 2025)</td>
+<td>Media</td>
+<td>Medio</td>
+<td>Apostar por baterías, optimización y comunidades</td>
+</tr>
+<tr>
+<td><strong>Resúmenes de IA de Google</strong> que reducen el clic en consultas informativas</td>
+<td>Alta</td>
+<td>Medio-alto</td>
+<td>Herramientas interactivas, datos propios, marca y newsletter</td>
+</tr>
+<tr>
+<td><strong>Competidores con mucha autoridad</strong></td>
+<td>Alta</td>
+<td>Medio</td>
+<td>Long tail, contenido regional y de problemas, mejor experiencia de usuario</td>
+</tr>
+<tr>
+<td><strong>Rechazo o suspensión de AdSense</strong></td>
+<td>Media</td>
+<td>Alto</td>
+<td>Contenido original, revisión editorial, cumplimiento estricto de políticas</td>
+</tr>
+<tr>
+<td><strong>Sensibilidad de contenido económico</strong> (calidad y confianza)</td>
+<td>Media</td>
+<td>Medio</td>
+<td>Revisión técnica, fuentes oficiales, autores identificables</td>
+</tr>
+<tr>
+<td><strong>Incumplimiento RGPD en formularios de leads</strong></td>
+<td>Baja-media</td>
+<td>Alto</td>
+<td>Asesoría legal y consentimiento explícito</td>
+</tr>
+<tr>
+<td><strong>Estacionalidad</strong></td>
+<td>Alta</td>
+<td>Bajo</td>
+<td>Planificar caja y calendario editorial en torno a los picos</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="103-recomendacion-final">10.3 Recomendación final</h3>
+<p><strong>Lanzar el proyecto con modelo híbrido y presupuesto controlado.</strong></p>
+<p><strong>Plan de los primeros 90 días:</strong></p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Semana</th>
+<th>Acción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1–2</td>
+<td>Elegir dominio, contratar hosting, instalar WordPress y tema, crear páginas legales y CMP, definir autores y revisor técnico</td>
+</tr>
+<tr>
+<td>2–3</td>
+<td>Investigación de keywords (Ola 1 completa con volumen y dificultad reales); validar los rangos de este informe</td>
+</tr>
+<tr>
+<td>3–8</td>
+<td>Publicar los 25 artículos de la Ola 1 y las 4 guías pilar prioritarias (precios, ayudas, baterías, trámites)</td>
+</tr>
+<tr>
+<td>6–8</td>
+<td>Desarrollar la primera calculadora (placas necesarias y ahorro)</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Solicitar AdSense con ≥ 25 artículos sólidos</td>
+</tr>
+<tr>
+<td>8–12</td>
+<td>Activar formulario de presupuestos con 1–2 instaladoras; negociar acuerdo de leads</td>
+</tr>
+<tr>
+<td>9–12</td>
+<td>Publicar Ola 2 (siguientes 25) y empezar el enlazado interno sistemático y la primera actualización</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Indicadores de seguimiento (KPI):</strong> sesiones orgánicas, páginas indexadas, posiciones medias de las 30 keywords prioritarias, RPM de página, CTR de anuncios, tasa de conversión de leads y coste por artículo.</p>
+<p><strong>Decisión práctica:</strong> si al mes 6 el sitio no supera las 1.500–2.000 sesiones y no hay señales de posicionamiento en keywords de segunda página, revisa el enfoque de contenido y de autoridad antes de invertir más. Si al mes 12 supera 10.000 sesiones, acelera la publicación y la búsqueda de leads.</p>
+<h2 id="anexo-fuentes-y-verificaciones-pendientes">Anexo: fuentes y verificaciones pendientes</h2>
+<p><strong>Fuentes de datos de mercado y regulación (consultadas en septiembre de 2026):</strong></p>
+<ul>
+<li>UNEF y prensa sectorial (<em>Energías Renovables</em>, <em>Interempresas</em>, IFEMA): potencia de autoconsumo a cierre de 2025 (9,3 GW), desaceleración del segmento residencial (−17 %) y crecimiento de baterías (+65 %, +99 % en hogares, 61 % de nuevas instalaciones residenciales con almacenamiento).</li>
+<li>UNEF (entrevista, abril de 2026): estabilización del mercado, RDL 7/2026 y nuevo Real Decreto de Autoconsumo pendiente.</li>
+<li>Repsol, 1KOMMA5°, Papernest, Selectra e Idealista: estado de ayudas y deducciones en 2026, fin del programa Next Generation de subvenciones generalizadas y bonificaciones municipales.</li>
+</ul>
+<p><strong>Verificaciones antes de publicar contenido:</strong></p>
+<ol>
+<li><strong>Deducción del IRPF por placas solares en 2026:</strong> las fuentes consultadas no coinciden (unas indican vigencia hasta el 31 de diciembre de 2026; otra señala que el Congreso rechazó la prórroga de las deducciones estatales). Contrastar con BOE y AEAT.</li>
+<li><strong>Volúmenes de búsqueda, CPC y precios de instalación:</strong> son estimaciones; validar con Keyword Planner, Semrush o Ahrefs y con presupuestos reales.</li>
+<li><strong>Requisitos de redes publicitarias gestionadas</strong> para sitios en español.</li>
+<li><strong>Disponibilidad de los dominios</strong> propuestos y marcas registradas.</li>
+<li><strong>Cumplimiento RGPD</strong> de los formularios de leads con asesoría profesional.</li>
+</ol>
+<p><em>Este informe es una guía de planificación. No constituye asesoramiento legal, fiscal ni financiero, y no garantiza resultados económicos.</em></p>
+  </article>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-col">
+      <strong>Informe de consultoría de nicho</strong>
+      <p style="margin:0.5rem 0 0;">Preparado como plan accionable para el lanzamiento de una web de contenido en el nicho de autoconsumo solar doméstico en España. Los volúmenes de búsqueda, CPC, RPM, precios de redacción y proyecciones de ingresos son estimaciones de rango: valídalos con tus propias herramientas antes de invertir.</p>
+    </div>
+    <div class="footer-col">
+      <strong>Aviso</strong>
+      <p style="margin:0.5rem 0 0;">Este documento no constituye asesoramiento legal, fiscal ni financiero, y no garantiza resultados económicos. Última revisión de datos de mercado: septiembre de 2026.</p>
+    </div>
+  </div>
+</footer>
+
+<button class="icon-btn" id="backToTop" aria-label="Volver arriba" style="position:fixed; right:1.1rem; bottom:calc(1.1rem + env(safe-area-inset-bottom,0px)); background:var(--hero-bg); color:var(--hero-text); border-color:transparent; box-shadow:0 6px 18px rgba(0,0,0,0.22); opacity:0; pointer-events:none; transition:opacity .2s ease; z-index:30;">↑</button>
+
+<script>
+(function(){
+  // ---- Theme toggle (per-viewer convenience; safe against storage failures) ----
+  var root = document.documentElement;
+  var themeBtn = document.getElementById('themeToggle');
+  function applyTheme(t){
+    if(t === 'dark' || t === 'light'){ root.setAttribute('data-theme', t); }
+    else { root.removeAttribute('data-theme'); }
+    var isDark = t === 'dark' || (t !== 'light' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    themeBtn.textContent = isDark ? '☀' : '◐';
+    themeBtn.setAttribute('aria-pressed', String(isDark));
+    themeBtn.setAttribute('aria-label', isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro');
+  }
+  var savedTheme = null;
+  try { savedTheme = window.localStorage.getItem('nicho-report-theme'); } catch(e) {}
+  applyTheme(savedTheme);
+  themeBtn.addEventListener('click', function(){
+    var current = root.getAttribute('data-theme');
+    var isDarkNow = current === 'dark' || (!current && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    var next = isDarkNow ? 'light' : 'dark';
+    applyTheme(next);
+    try { window.localStorage.setItem('nicho-report-theme', next); } catch(e) {}
+  });
+
+  // ---- Mobile TOC drawer ----
+  var body = document.body;
+  var tocToggle = document.getElementById('tocToggle');
+  var sidebarClose = document.getElementById('sidebarClose');
+  var backdrop = document.getElementById('tocBackdrop');
+  function openToc(){ body.classList.add('toc-open'); tocToggle.setAttribute('aria-expanded','true'); }
+  function closeToc(){ body.classList.remove('toc-open'); tocToggle.setAttribute('aria-expanded','false'); }
+  tocToggle.addEventListener('click', openToc);
+  sidebarClose.addEventListener('click', closeToc);
+  backdrop.addEventListener('click', closeToc);
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeToc(); });
+  document.querySelectorAll('.sidebar nav a').forEach(function(a){
+    a.addEventListener('click', closeToc);
+  });
+
+  // ---- Active section highlighting ----
+  var links = Array.prototype.slice.call(document.querySelectorAll('.nav-link'));
+  var sections = links.map(function(l){ return document.getElementById(l.dataset.target); }).filter(Boolean);
+  if('IntersectionObserver' in window && sections.length){
+    var observer = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        var link = document.querySelector('.nav-link[data-target="' + entry.target.id + '"]');
+        if(!link) return;
+        if(entry.isIntersecting){
+          links.forEach(function(l){ l.classList.remove('active'); });
+          link.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-15% 0px -70% 0px', threshold: 0 });
+    sections.forEach(function(s){ observer.observe(s); });
+  }
+
+  // ---- Back to top ----
+  var backToTop = document.getElementById('backToTop');
+  window.addEventListener('scroll', function(){
+    var show = window.scrollY > 900;
+    backToTop.style.opacity = show ? '1' : '0';
+    backToTop.style.pointerEvents = show ? 'auto' : 'none';
+  }, { passive: true });
+  backToTop.addEventListener('click', function(){
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();
+</script>
+</body>
+</html>
